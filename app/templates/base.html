@@ -1,0 +1,14 @@
+<html>
+    <head>
+      {% if title %}
+      <title>{{ title }} - HomeDAQ</title>
+      {% else %}
+      <title>Welcome to HomeDAQ</title>
+      {% endif %}
+    </head>
+    <body>
+        <div>HomeDAQ: <a href="/index">Home</a></div>
+        <hr>
+        {% block content %}{% endblock %}
+    </body>
+</html>
