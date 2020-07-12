@@ -37,5 +37,5 @@ def add_data():
 
     # db.session.add(new_data)
     # db.session.commit()
-    return home_data
+    return "Done", 201
 
