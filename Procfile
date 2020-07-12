@@ -1,1 +1,1 @@
-web: gunicorn app:homedaq.py
+web: gunicorn homedaq:app
