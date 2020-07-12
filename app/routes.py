@@ -9,7 +9,22 @@ from .models import HomeData
 @app.route("/")
 @app.route("/index")
 def index():
-    return render_template("index.html", title="Home")
+    home_data = HomeData.query.limit(30)
+
+    temperatures = [temperature.temperature for temperature in home_data]
+    timestamps = [
+        timestamp.timestamp.strftime("%H:%M:%S %m-%d-%y") for timestamp in home_data
+    ]
+
+    legend = "Home Temperature Data"
+
+    return render_template(
+        "index.html",
+        title="Home",
+        values=temperatures,
+        labels=timestamps,
+        legend=legend,
+    )
 
 
 @app.route("/add_data", methods=["POST"])
