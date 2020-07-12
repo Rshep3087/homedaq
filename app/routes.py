@@ -31,11 +31,11 @@ def index():
 def add_data():
     home_data = request.get_json()
     print(home_data)
-    # time = parser.parse(home_data["time"])
+    time = parser.parse(home_data["time"])
 
-    # new_data = HomeData(temperature=home_data["temperature"], timestamp=time)
+    new_data = HomeData(temperature=home_data["temperature"], timestamp=time)
 
-    # db.session.add(new_data)
-    # db.session.commit()
+    db.session.add(new_data)
+    db.session.commit()
     return "Done", 201
 
