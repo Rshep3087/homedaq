@@ -1,5 +1,7 @@
-from app import app, db
+from app import create_app, db
 from app.models import HomeData
+
+app = create_app
 
 
 @app.shell_context_processor

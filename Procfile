@@ -1,1 +1,1 @@
-web: gunicorn app:homedaq.py
+web: flask db upgrade; gunicorn homedaq:app
