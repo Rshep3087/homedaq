@@ -1,14 +1,11 @@
-"""
-Author: Daniel Williams
-Created: 10/13/2020 11:08
-This script is intended to read in the Airbrakes data struct and then prep the output for the web app.
-"""
-
-import pandas as pd
 import json
 
+import pandas as pd
 
-def read_airbrakes_csv():
+ALLOWED_EXTENSIONS = {'csv'}
+
+
+def read_airbrakes_csv() -> str:
     column_names = ["Acceleration_Heading", "Acceleration_X", "Acceleration_Y", "Acceleration_Z", "Pressure_Heading", "Pressure (Pa)",
                     "Temperature_Heading", "Temperature (C)", "Altitude_Heading", "Altitude (Ft)", "VelV_Heading", "VelV (ft/s)",
                     "VelV_IMU_Heading", "VelV_IMU", "AccelV_Heading", "AccelV", "Actuation_Heading", "Actuation State", "Time_Heading",
@@ -19,10 +16,10 @@ def read_airbrakes_csv():
     removed_columns = ["Acceleration_Heading", "Pressure_Heading", "Temperature_Heading", "Altitude_Heading", "VelV_Heading",
                        "VelV_IMU_Heading", "AccelV_Heading", "Actuation_Heading", "Time_Heading", "Flight_State_Heading"]
     df.drop(removed_columns, axis=1, inplace=True)
-    data = df.to_json()
-    # print(data)
-    # test_data = json.loads(data)
-    return data
+
+    return df
 
 
-read_airbrakes_csv()
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
