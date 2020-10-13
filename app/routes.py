@@ -68,18 +68,23 @@ def add_airbrake_data():
             df = read_airbrakes_csv("app\static\csv_files\LOG.CSV")
             print("Triggered")
             for row in range(0, df.shape[0]):
-                new_data = RocketData(acceleration_x=df.iloc[row, [0]],
-                                      acceleration_y=df.iloc[row, [1]],
-                                      acceleration_z=df.iloc[row, [2]],
-                                      pressure=df.iloc[row, [3]],
-                                      temperature=df.iloc[row, [4]],
-                                      altitude=df.iloc[row, [5]],
-                                      vertical_velocity=df.iloc[row, [6]],
-                                      vertical_velocity_IMU=df.iloc[row, [7]],
-                                      vertical_acceleration=df.iloc[row, [8]],
-                                      airbrakes_state=df.iloc[row, [9]],
-                                      time_milliseconds=df.iloc[row, [10]],
-                                      flight_state=df.iloc[row, [11]])
+                new_data = RocketData(id=int(row),
+                                      acceleration_x=float(df.iloc[row, [0]]),
+                                      acceleration_y=float(df.iloc[row, [1]]),
+                                      acceleration_z=float(df.iloc[row, [2]]),
+                                      pressure=float(df.iloc[row, [3]]),
+                                      temperature=float(df.iloc[row, [4]]),
+                                      altitude=float(df.iloc[row, [5]]),
+                                      vertical_velocity=float(
+                                          df.iloc[row, [6]]),
+                                      vertical_velocity_IMU=float(
+                                          df.iloc[row, [7]]),
+                                      vertical_acceleration=float(
+                                          df.iloc[row, [8]]),
+                                      airbrakes_state=int(df.iloc[row, [9]]),
+                                      time_milliseconds=int(
+                                          df.iloc[row, [10]]),
+                                      flight_state=int(df.iloc[row, [11]]))
                 db.session.add(new_data)
             print(RocketData)
             db.session.commit()
