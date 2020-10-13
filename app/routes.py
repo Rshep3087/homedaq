@@ -4,7 +4,7 @@ import time
 from flask import render_template, request
 from app import app
 from app import db
-from .models import HomeData
+from .models import HomeData, RocketData
 
 
 @app.route("/api/index")
@@ -41,6 +41,17 @@ def add_data():
 
     db.session.add(new_data)
     db.session.commit()
+    return "Done", 201
+
+
+@app.route("/api/add-airbrake-data", methods=["POST"])
+def add_airbrake_data():
+    airbrake_data = request.get_json()
+    print(airbrake_data)
+    # new_data = RocketData()
+
+    # db.session.add(new_data)
+    # db.session.commit()
     return "Done", 201
 
 
