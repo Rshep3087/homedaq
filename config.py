@@ -10,4 +10,4 @@ class Config(object):
     ) or "sqlite:///" + os.path.join(basedir, "app.db")
     print(SQLALCHEMY_DATABASE_URI)
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    UPLOAD_FOLDER = ".//app//static//csv_files"
+    UPLOAD_FOLDER = "app\static\csv_files"

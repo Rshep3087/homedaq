@@ -2,8 +2,7 @@ import os
 import time
 
 from dateutil import parser
-from flask import redirect, render_template, request, url_for
-from flask.helpers import flash
+from flask import flash, redirect, render_template, request, url_for
 from werkzeug.utils import secure_filename
 
 from app import app, db
@@ -49,7 +48,7 @@ def add_data():
     return "Done", 201
 
 
-@app.route("/api/add-airbrake-data")
+@app.route("/api/add-airbrake-data", methods=['GET', 'POST'])
 def add_airbrake_data():
     if request.method == 'POST':
         # check if the post request has the file part
@@ -66,7 +65,25 @@ def add_airbrake_data():
             filename = secure_filename(file.filename)
             print(filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('add_airbrake_data-results'))
+            df = read_airbrakes_csv("app\static\csv_files\LOG.CSV")
+            print("Triggered")
+            for row in range(0, df.shape[0]):
+                new_data = RocketData(acceleration_x=df.iloc[row, [0]],
+                                      acceleration_y=df.iloc[row, [1]],
+                                      acceleration_z=df.iloc[row, [2]],
+                                      pressure=df.iloc[row, [3]],
+                                      temperature=df.iloc[row, [4]],
+                                      altitude=df.iloc[row, [5]],
+                                      vertical_velocity=df.iloc[row, [6]],
+                                      vertical_velocity_IMU=df.iloc[row, [7]],
+                                      vertical_acceleration=df.iloc[row, [8]],
+                                      airbrakes_state=df.iloc[row, [9]],
+                                      time_milliseconds=df.iloc[row, [10]],
+                                      flight_state=df.iloc[row, [11]])
+                db.session.add(new_data)
+            print(RocketData)
+            db.session.commit()
+            return redirect(url_for('add_airbrake_data'))
 
     return '''
     <!doctype html>
@@ -79,31 +96,6 @@ def add_airbrake_data():
     '''
 
 
-@app.route("/api/add-airbrake-data-results")
-def add_airbrake_data_results():
-    df = read_airbrakes_csv()
-    print(df)
-
-    for row in range(0, df.shape[0]):
-        new_data = RocketData(acceleration_x=df.iloc[row, [0]],
-                              acceleration_y=df.iloc[row, [1]],
-                              acceleration_z=df.iloc[row, [2]],
-                              pressure=df.iloc[row, [3]],
-                              temperature=df.iloc[row, [4]],
-                              altitude=df.iloc[row, [5]],
-                              vertical_velocity=df.iloc[row, [6]],
-                              vertical_velocity_IMU=df.iloc[row, [7]],
-                              vertical_acceleration=df.iloc[row, [8]],
-                              airbrakes_state=df.iloc[row, [9]],
-                              time_milliseconds=df.iloc[row, [10]],
-                              flight_state=df.iloc[row, [11]])
-        db.session.add(new_data)
-    print(RocketData)
-    print("Done")
-    db.session.commit()
-    return "Done", 201
-
-
-@app.route("/api/time")
+@ app.route("/api/time")
 def get_current_time():
     return {"time": time.time()}
