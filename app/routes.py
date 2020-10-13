@@ -86,7 +86,6 @@ def add_airbrake_data():
                                           df.iloc[row, [10]]),
                                       flight_state=int(df.iloc[row, [11]]))
                 db.session.add(new_data)
-            print(RocketData)
             db.session.commit()
             return redirect(url_for('add_airbrake_data'))
 
