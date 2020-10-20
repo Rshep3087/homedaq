@@ -63,10 +63,9 @@ def add_airbrake_data():
             return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            print(filename)
+            print("The Uploaded Filename is: " + filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             df = read_airbrakes_csv("app\static\csv_files\LOG.CSV")
-            print("Triggered")
             for row in range(0, df.shape[0]):
                 new_data = RocketData(id=int(row),
                                       acceleration_x=float(df.iloc[row, [0]]),
@@ -92,11 +91,14 @@ def add_airbrake_data():
     return '''
     <!doctype html>
     <title>Upload new File</title>
-    <h1>Upload new File</h1>
+    <body style="background-color:powderblue;">
+    <h1>Airbrakes Subscale Data Upload</h1>
+    <h2>Upload LOG CSV File Here:</h2>
     <form method=post enctype=multipart/form-data>
       <input type=file name=file>
       <input type=submit value=Upload>
     </form>
+    <a href="http://127.0.0.1:5000/api/add-airbrake-data"><br><br>Use this Link to view results.</a>
     '''
 
 
